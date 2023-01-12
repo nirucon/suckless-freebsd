@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+# probably a fork of a fork of a fork...
+# n.rudolfsson.net
+
+# date time
+dte() {
+    echo $(date "+%Y-%m-%d %H:%M")
+}
+
+# battery status
+battery() {
+
+    CAPACITY=`acpiconf -i 0 | grep 'Remaining capacity:' | cut -f2`
+    TIME=`acpiconf -i 0 | grep 'Remaining time:' | cut -f3`
+    STATE=`acpiconf -i 0 | grep 'State:' | cut -f4`
+
+    if [ $STATE == "discharging" ]; then
+        STATE="-"
+    elif [ $STATE == "charging" ]; then
+        STATE="+"
+    fi
+
+    if [ $STATE == "-" ]; then
+        echo "Bat: $CAPACITY [$STATE] ($TIME)"
+    elif [ $STATE == "+" ]; then
+        echo "Bat: $CAPACITY [$STATE]" 
+    fi
+}
+
+# os icon
+brand() {
+    BRAND=$'\uf30c'
+    echo $BRAND
+}
+
+#
+while true; do
+    xsetroot -name  " [ OS: $(brand) | $(battery) | $(dte) ] "
+    sleep 1
+done &
