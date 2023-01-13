@@ -1,0 +1,3 @@
+# dwm-sbar
+* statusbar for dwm
+* probably a fork of a fork of a fork of a fork...

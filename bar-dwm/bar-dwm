@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+# dep: xorg-xsetroot
+
+# script dir (dwm-sbar)
+LOC=$(readlink -f "$0")
+DIR=$(dirname "$LOC")
+
+# separators SEP1 (before) SEP2 (after)
+export SEP1=" "
+export SEP2=" "
+
+# import scripts
+#. "$DIR/scripts/cmus"
+#. "$DIR/scripts/spotify"
+#. "$DIR/scripts/resources"
+#. "$DIR/scripts/bat0"
+#. "$DIR/scripts/bat1"
+#. "$DIR/scripts/alsa"
+#. "$DIR/scripts/weather"
+#. "$DIR/scripts/networkmanager"
+. "$DIR/scripts/date"
+
+parallelize() {
+    while true
+    do
+        printf "Running parallel processes\n"
+        weather &
+        networkmanager &
+        sleep 5
+    done
+}
+parallelize &
+
+# update bar
+while true
+do
+    dispstr=""
+#    dispstr="$dispstr$(sdwmbar_cmus)"
+#    dispstr="$dispstr$(sdwmbar_spotify)"
+#    dispstr="$dispstr$(sdwmbar_resources)"
+#    dispstr="$dispstr$(sdwmbar_bat0)"
+#    dispstr="$dispstr$(sdwmbar_bat1)"
+#    dispstr="$dispstr$(sdwmbar_alsa)"
+#    dispstr="$dispstr${___WEATHER__}"
+#    dispstr="$dispstr${__NETWORKMANAGER__}"
+    dispstr="$dispstr$(sdwmbar_date)"
+
+    xsetroot -name "$dispstr"
+    sleep 1
+done
